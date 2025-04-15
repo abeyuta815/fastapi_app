@@ -1,0 +1,27 @@
+api:
+  dashboard: true
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+  file:
+    # 動的設定ファイル（traefik_dynamic.yml）の読み込み。ここでは /etc/traefik/traefik_dynamic.yml を指定
+    filename: /etc/traefik/traefik_dynamic.yml
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      email: abeyuta815@gmail.com
+      storage: "/letsencrypt/acme.json"
+      httpChallenge:
+        entryPoint: web
+      preferredChain: "ISRG Root X1"  # ← Let's Encrypt が推奨するチェーンを指定
+log:
+  level: DEBUG
